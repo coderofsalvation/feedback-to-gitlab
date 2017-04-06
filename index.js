@@ -41,13 +41,16 @@ function feedback (options) {
     // parse JSON body
     bodyParser.json({ limit: options.store.limit }).call(this, req, res, next)
 
+		req.body.feedback = JSON.parse(req.body.feedback)
+		req.body = Object.assign(req.body, req.body.feedback)
+
     var filename = (new Date()).toJSON().replace('.', '-').replace(/:/g, '') + '.png'
     var filepath = ''
     if (options.store.path !== '') {
       filepath = options.store.path.replace(/^\//, '').replace(/\/$/, '') + '/'
     }
     filepath += filename
-    var content = req.body.img.replace(/^data:([A-Za-z-+\/]+);base64,/, '')
+    var content = String(req.body.img).replace(/^data:([A-Za-z-+\/]+);base64,/, '')
 
     var screenshotUrl = options.url + '/' + options.store.repository.slug + '/raw/' + options.store.branch + '/' + filepath
     var issue = generateIssue(req.body, screenshotUrl, options)
@@ -123,22 +126,25 @@ function getRepositoryObject (identifier, gitlab, callback) {
  * @return {Object}          object that can be used by gitlab.issue.create()
  */
 function generateIssue (body, url, options) {
+
   var now = new Date()
 
   var description = [
     body.note,
-    '',
-    '## Browser Information',
-    '',
-    '- Platform: ' + body.browser.platform,
-    '- User Agent: ' + body.browser.userAgent,
-    '- Cookies enabled: ' + (body.browser.cookieEnabled ? 'yes' : 'no'),
-    '- Plugins: ' + body.browser.plugins.join(', '),
-    '',
-    '## Additional Information',
-    '',
     '- URL: ' + body.url
   ]
+	if( body.browser ){
+    description.push('')
+    description.push('## Browser Information')
+    description.push('')
+    description.push('- Platform: ' + body.browser.platform || '')
+    description.push('- User Agent: ' + body.browser.userAgent)
+    description.push('- Cookies enabled: ' + (body.browser.cookieEnabled ? 'yes' : 'no'))
+    description.push('- Plugins: ' + body.browser.plugins.join(', '))
+    description.push('')
+    description.push('## Additional Information')
+    description.push('')
+	}
   if (body.contact) {
     description.push('- Reported by: ' + body.contact)
   }
@@ -151,7 +157,7 @@ function generateIssue (body, url, options) {
   ])
 
   var issue = {
-    title: body.note.slice(0, 30),
+    title: String(body.note).slice(0, 30),
     description: description.join('\n'),
     labels: options.labels.join(',')
   }
