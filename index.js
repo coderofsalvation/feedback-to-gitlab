@@ -13,7 +13,7 @@ function feedback (options) {
   options.store.repository = options.store.repository || options.repository
   options.store.branch = options.store.branch || 'master'
   options.store.path = options.store.path || 'screenshots'
-  options.store.limit = options.store.limit || '1mb'
+  options.store.limit = options.store.limit || '2mb'
 
   requiredOptions.forEach(function checkForRequired (required) {
     if (!options[required]) {
@@ -40,8 +40,6 @@ function feedback (options) {
   function handler (req, res, next) {
     // parse JSON body
     bodyParser.json({ limit: options.store.limit }).call(this, req, res, next)
-
-		req.body.feedback = JSON.parse(req.body.feedback)
 		req.body = Object.assign(req.body, req.body.feedback)
 
     var filename = (new Date()).toJSON().replace('.', '-').replace(/:/g, '') + '.png'
@@ -50,7 +48,7 @@ function feedback (options) {
       filepath = options.store.path.replace(/^\//, '').replace(/\/$/, '') + '/'
     }
     filepath += filename
-    var content = String(req.body.img).replace(/^data:([A-Za-z-+\/]+);base64,/, '')
+    var content = String(req.body.img).replace(/.*base64,/, '')
 
     var screenshotUrl = options.url + '/' + options.store.repository.slug + '/raw/' + options.store.branch + '/' + filepath
     var issue = generateIssue(req.body, screenshotUrl, options)
@@ -72,6 +70,7 @@ function feedback (options) {
         content: content,
         commit_message: 'Screenshot for Issue #' + issueId
       }, function (data) {
+				console.dir(arguments)
         console.log('Issue #' + issueId + ' created')
       })
     })
