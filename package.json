@@ -1,5 +1,5 @@
 {
-  "name": "feedback-to-gitlab",
+  "name": "feedbackbutton-to-gitlab",
   "version": "1.0.3",
   "description": "Express middleware to generate Gitlab issues from visual user feedback",
   "main": "index.js",
