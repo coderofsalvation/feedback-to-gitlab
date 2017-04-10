@@ -14,7 +14,7 @@ setTimeout( function(){
 	var btn = document.querySelector('div.feedback a')
 	btn.onclick = function(){
 		var data = {}
-		data.note = prompt('Your feedback')
+		data.note = prompt( this.getAttribute("data-title") )
 		if( data.note.length < 2 ) return
 		data.browser 				= {}
 		data.browser.appCodeName	= navigator.appCodeName
