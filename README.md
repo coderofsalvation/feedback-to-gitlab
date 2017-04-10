@@ -35,8 +35,9 @@ app.listen(80)
 On the website where you want to show a feedback-button you have to include this:
 
 ```js
-<link rel="stylesheet" href="/feedback.css"> <!-- express module -->
-<script src="/feedback.js"></script> <!-- express module -->
+<link rel="stylesheet" href="/feedback.css"> <!-- served by feedbackbutton-to-gitlab express module -->
+<script src="/feedback.js"></script>         <!-- served by feedbackbutton-to-gitlab express module -->
+<div class="feedback"><a>Feedback</a></div>
 ```
 
 > NOTE: of course these files are just examples and can be replaced with your own

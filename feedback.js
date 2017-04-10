@@ -1,6 +1,4 @@
-document.body.innerHTML += '<div class="feedback"><a>Feedback</a></div>'
 setTimeout( function(){
-
 
 	var getXHR = function(){
 		var xhr = new XMLHttpRequest;
@@ -17,6 +15,7 @@ setTimeout( function(){
 	btn.onclick = function(){
 		var data = {}
 		data.note = prompt('Your feedback')
+		if( data.note.length < 2 ) return
 		data.browser 				= {}
 		data.browser.appCodeName	= navigator.appCodeName
 		data.browser.appName		= navigator.appName
@@ -48,4 +47,4 @@ setTimeout( function(){
 		})
   }
 
-},100)
+},2500)
