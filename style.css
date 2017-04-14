@@ -1,4 +1,5 @@
 .feedback { 
+  display:block !important;
   width: 106px; 
   position: fixed; 
   top: 40%; 

@@ -37,7 +37,7 @@ On the website where you want to show a feedback-button you have to include this
 ```js
 <link rel="stylesheet" href="/feedback.css"> <!-- served by feedbackbutton-to-gitlab express module -->
 <script src="/feedback.js"></script>         <!-- served by feedbackbutton-to-gitlab express module -->
-<div class="feedback"><a data-title="Your feedback:">Feedback</a></div>
+<div class="feedback" style="display:none"><a data-title="Your feedback:">Feedback</a></div>
 ```
 
 > NOTE: of course these files are just examples and can be replaced with your own
